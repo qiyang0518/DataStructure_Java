@@ -44,6 +44,7 @@ public class SingleList
         singleLinkedList.showLinkedList();
         singleLinkedList.getLength();
 //        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
+        System.out.println("test-git");
 
 
     }
