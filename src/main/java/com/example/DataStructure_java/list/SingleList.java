@@ -1,5 +1,4 @@
 package com.example.DataStructure_java.list;
-import java.util.LinkedList;
 
 /**
  * @author 齐阳
@@ -18,10 +17,10 @@ public class SingleList
         HeroNode hero1 = new HeroNode(1,"宋江2","及时雨");
         HeroNode hero2 = new HeroNode(2,"卢俊义2","玉麒麟");
         HeroNode hero3 = new HeroNode(3,"吴用2","智多星");
-        HeroNode hero4 = new HeroNode(4,"林冲2","豹子头");
+        HeroNode hero4 = new HeroNode(4,"林冲1","豹子头");
         HeroNode hero5 = new HeroNode(5,"林冲2","豹子头");
-        HeroNode hero6 = new HeroNode(6,"林冲2","豹子头");
-        HeroNode hero7 = new HeroNode(7,"林冲2","豹子头");
+        HeroNode hero6 = new HeroNode(6,"林冲3","豹子头");
+        HeroNode hero7 = new HeroNode(7,"林冲4","豹子头");
         SingleLinkedList singleLinkedList = new SingleLinkedList();
         singleLinkedList.addByOrder(hero4);
         singleLinkedList.addByOrder(hero1);
@@ -34,18 +33,40 @@ public class SingleList
         HeroNode hero8 = new HeroNode(4,"林冲","豹子头~~");
         singleLinkedList.update(hero5);
         singleLinkedList.showLinkedList();
-//        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
+        //        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
         singleLinkedList.remove(1);
         System.out.println("删除后的结果:");
         singleLinkedList.showLinkedList();
-//        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
+        //        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
         singleLinkedList.remove(2);
         System.out.println("删除后的结果:");
         singleLinkedList.showLinkedList();
-        singleLinkedList.getLength();
-//        System.out.println("结点个数为:" + (singleLinkedList.getLength()));
+        //        singleLinkedList.getLength();
+        System.out.println("结点个数为:" + singleLinkedList.getLength());
+        System.out.println(singleLinkedList.getIndexHero(3));
+        System.out.println(singleLinkedList.getLastIndexHero(3));
+        System.out.println("反转后的链表:");
+        singleLinkedList.reverse();
 
+    }
 
+    public static int getLength(HeroNode head)
+    {
+        int length = 0;
+        HeroNode temp = head.next;
+        if(head.next == null)
+        {
+            return 0;
+        }
+        else
+        {
+            while(temp != null)
+            {
+                length++;
+                temp = temp.next;
+            }
+        }
+        return length;
     }
 }
 
@@ -236,46 +257,144 @@ class SingleLinkedList
     {
         /**
          * 只能获取一次链表长度
-        HeroNode temp = head;
-        int length = 0;
-        if(temp.next == null)
-        {
-            System.out.println("链表长度为:" + length);
-            return length;
-        }
-        else
-        {
-            while(temp.next != null)
-            {
-                length++;
-                temp.next = temp.next.next;
-            }
-            return length;
-        }
+         HeroNode temp = head;
+         int length = 0;
+         if(temp.next == null)
+         {
+         System.out.println("链表长度为:" + length);
+         return length;
+         }
+         else
+         {
+         while(temp.next != null)
+         {
+         length++;
+         temp.next = temp.next.next;
+         }
+         return length;
+         }
          */
 
         //改进版
-        int length = 0;
-        if(head.next == null)
+        int length = 0;                                      //定义链表长度默认为0
+        if(head.next == null)                                //判断链表是否为空
         {
-            System.out.println("链表为空!");
+            System.out.println("链表为空!");                  //链表为空,返回length = 0
             return length;
-
         }
         else
         {
-            HeroNode currentNode = head.next;
-            while(currentNode != null);
+            HeroNode currentNode = head.next;                    //定义指针currentNode,对列表进行遍历
+            while(currentNode != null)
             {
-                length++;
-                currentNode = currentNode.next;
+                //                System.out.println("1");
+                length++;                                   //length自增
+                currentNode = currentNode.next;             //指针递增
             }
+            ;
             System.out.print("链表结点个数为:");
             return length;
         }
-
     }
 
+    public HeroNode getIndexHero(int index)
+    {
+        HeroNode temp = head.next;
+        HeroNode goalHero = null;
+        int indexHero = 0;
+        if(temp == null)
+        {
+            System.out.println("链表为空,元素不存在!");
+            return null;
+        }
+        else
+        {
+            while(temp != null)
+            {
+                indexHero++;
+                if(temp.next == null)
+                {
+                    goalHero = temp;
+                }
+                temp = temp.next;
+                //                System.out.println("1");
+
+            }
+            System.out.println("indexHero:" + indexHero);
+            if(index + 1 > indexHero)               //index = 3 indexHero = 5
+            {
+                System.out.println(index + "这个节点不存在");
+                return null;
+            }
+            //            System.out.println("2");
+            return goalHero;
+        }
+    }
+
+    /**
+     * 获取链表倒数第K个元素
+     * 采用双指针方法进行遍历temp1,temp2(默认从第一个元素开始遍历)
+     * 思路:temp2比temp1先遍历K-1个元素,而后temp1,temp2同时遍历
+     * 直至temp2为null时,证明temp1就是链表倒数第K个元素
+     */
+
+    public HeroNode getLastIndexHero(int index)
+    {
+        if(head.next == null)
+        {
+            System.out.println("链表为空,元素不存在");
+        }
+        HeroNode temp1 = head.next;
+        HeroNode temp2 = head.next;
+        for(int i = 0;(i < index - 2 && temp2 != null);i++)
+        {
+            temp2 = temp2.next;
+        }
+        System.out.println(temp2);
+        while(temp2 != null)
+        {
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+        System.out.println("倒数第三个元素是:");
+        return temp1;
+    }
+
+    public void reverse()
+    {
+        HeroNode reverseHead = new HeroNode(0,"","");
+        HeroNode next = null;
+        HeroNode temp = head.next;
+        {
+            if(temp == null || temp.next == null)
+            {
+                System.out.println("链表为空!");
+            }
+            else
+            {
+                while(temp != null)
+                {
+//                    System.out.println("2");
+//                    reverseHead = temp;
+//                    next = temp.next;
+//                    temp = temp.next;
+//                    reverseHead.next = reverseHead;
+                    next = temp.next;
+                    temp.next = reverseHead.next;
+                    reverseHead.next = temp;
+                    temp = next;
+                }
+            }
+        }
+        while(reverseHead.next != null)
+        {
+            System.out.println(reverseHead.next);
+            reverseHead = reverseHead.next;
+            System.out.println("1");
+        }
+
+
+    }
 }
 
 @SuppressWarnings({"all"})
