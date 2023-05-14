@@ -47,6 +47,7 @@ public class SingleList
         System.out.println(singleLinkedList.getLastIndexHero(3));
         System.out.println("反转后的链表:");
         singleLinkedList.reverse();
+        System.out.println("2023/5/15");
 
     }
 
