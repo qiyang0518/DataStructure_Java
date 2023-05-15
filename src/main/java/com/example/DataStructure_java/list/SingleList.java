@@ -1,4 +1,5 @@
 package com.example.DataStructure_java.list;
+import java.util.Stack;
 
 /**
  * @author 齐阳
@@ -45,10 +46,30 @@ public class SingleList
         System.out.println("结点个数为:" + singleLinkedList.getLength());
         System.out.println(singleLinkedList.getIndexHero(3));
         System.out.println(singleLinkedList.getLastIndexHero(3));
-        System.out.println("反转后的链表:");
-        singleLinkedList.reverse();
-        System.out.println("2023/5/15");
 
+        System.out.println("=========" + "顺序链表" + "===========");
+        singleLinkedList.showLinkedList();
+//        singleLinkedList.reversePrint();
+
+        System.out.println("反转后的链表:");
+//        singleLinkedList.reverseMethod1();
+        System.out.println("2023/5/15");
+        HeroNode hero9 = new HeroNode(7,"吴用2","智多星");
+        HeroNode hero10 = new HeroNode(8,"林冲1","豹子头");
+        HeroNode hero11 = new HeroNode(9,"林冲2","豹子头");
+        HeroNode hero12 = new HeroNode(10,"林冲3","豹子头");
+        HeroNode hero13 = new HeroNode(11,"林冲4","豹子头");
+        SingleLinkedList list2 = new SingleLinkedList();
+        list2.addByOrder(hero9 );
+        list2.addByOrder(hero10);
+        list2.addByOrder(hero11);
+        list2.addByOrder(hero12);
+        list2.addByOrder(hero13);
+
+        //合并没实现
+//        System.out.println("合并两个链表,并顺序打印如下:");
+//        singleLinkedList.addListByOrder(singleLinkedList,list2);
+//        singleLinkedList.showLinkedList();
     }
 
     public static int getLength(HeroNode head)
@@ -76,6 +97,7 @@ class SingleLinkedList
 {
     private HeroNode head = new HeroNode(0,"","");              //定义一个头结点,内容为空
 
+
     public void add(HeroNode heroNode)                  //添加元素(传入一个节点)
     {
         HeroNode temp = head;                              //后面添加元素需要改变头节点的next,为了不影响头节点,创建一个暂存节点,替代头节点
@@ -95,7 +117,7 @@ class SingleLinkedList
     {
         if(head.next == null)
         {
-            System.out.println("链表为空!");
+//            System.out.println("链表为空!");
             return;
         }
         else
@@ -112,7 +134,7 @@ class SingleLinkedList
                 }
 
             }
-            System.out.println("链表显示完毕!");
+//            System.out.println("链表显示完毕!");
         }
 
     }
@@ -124,7 +146,7 @@ class SingleLinkedList
     public void addByOrder(HeroNode heroNode)
     {
         HeroNode temp = head;
-        boolean flag = false;               //添加的元素是否存在,默认false
+        boolean flag = false;               //添加的元素是否存在,默认false,默认有位置插入元素
         while(true)
         {
             //            if(temp.next == null)
@@ -164,23 +186,23 @@ class SingleLinkedList
             //            temp = temp.next;       //遍历当前列表
 
 
-            if(temp.next == null)
+            if(temp.next == null)                           //判断下一个元素是否为空
             {
+                break;                                      //空则推出循环
+            }
+            if(temp.next.no > heroNode.no)                  //判断县各元素的no是否大于新增元素的no
+            {
+                break;                                      //如果大于证明temp与temp.next就是插入的位置
+            }
+            else if(temp.next.no == heroNode.no)            //判断temp的下一个元素的no是否与新增元素的no
+            {
+                flag = true;                                //修改flag值,不插入元素
                 break;
             }
-            if(temp.next.no > heroNode.no)
-            {
-                break;
-            }
-            else if(temp.next.no == heroNode.no)
-            {
-                flag = true;
-                break;
-            }
-            temp = temp.next;
+            temp = temp.next;                               //temp递增(指针后移)
 
         }
-        if(flag)
+        if(flag)                                            //flag = true 元素已存在
         {
             System.out.println("该编号元素已存在" + heroNode.no);
         }
@@ -361,7 +383,7 @@ class SingleLinkedList
         return temp1;
     }
 
-    public void reverse()
+    public void reverseMethod1()
     {
         HeroNode reverseHead = new HeroNode(0,"","");
         HeroNode next = null;
@@ -375,11 +397,11 @@ class SingleLinkedList
             {
                 while(temp != null)
                 {
-//                    System.out.println("2");
-//                    reverseHead = temp;
-//                    next = temp.next;
-//                    temp = temp.next;
-//                    reverseHead.next = reverseHead;
+                    //                    System.out.println("2");
+                    //                    reverseHead = temp;
+                    //                    next = temp.next;
+                    //                    temp = temp.next;
+                    //                    reverseHead.next = reverseHead;
                     next = temp.next;
                     temp.next = reverseHead.next;
                     reverseHead.next = temp;
@@ -391,10 +413,159 @@ class SingleLinkedList
         {
             System.out.println(reverseHead.next);
             reverseHead = reverseHead.next;
-            System.out.println("1");
+            //            System.out.println("1");
         }
+    }
 
+    public void reverseMethod2()
+    {
 
+    }
+
+    public void reversePrint()
+    {
+        HeroNode temp = head.next;
+        Stack stack = new Stack();
+        if(temp == null)
+        {
+            System.out.println("链表为空!");
+        }
+        else
+        {
+            while(temp != null)
+            {
+                stack.push(temp);
+                temp = temp.next;
+                //                System.out.println("1");
+            }
+            System.out.println("逆序打印链表如下:");
+            //            System.out.println(stack.pop());
+            while(stack.size() > 0)
+            {
+                System.out.println(stack.pop());
+            }
+        }
+    }
+
+    public void addListByOrder(SingleLinkedList list1,SingleLinkedList list2)
+    {
+        //没实现
+        //默认两个链表都是有序的,都是根据addByOrder()方法添加元素
+        //把链表二作为新增链表,加至链表一
+        HeroNode heroNode = new HeroNode(0,"","");
+        HeroNode temp1 = list1.head.next;
+        HeroNode temp2 = list2.head.next;
+        HeroNode tempNode = heroNode;
+        while(temp1 != null && temp2 != null)
+        {
+            if(temp1.no < temp2.no)
+            {
+                tempNode.next = temp1.next;
+                temp1 = temp1.next;
+            }
+            else
+            {
+                tempNode.next = temp2;
+                temp2 = temp2.next;
+            }
+            tempNode = tempNode.next;
+        }
+        if(temp1 == null)
+        {
+            tempNode.next = temp2;
+        }
+        else
+        {
+            tempNode = temp1;
+        }
+        temp1 = tempNode.next;
+        /**
+         * HeroNode temp1 = list1.head.next;
+         *         SingleLinkedList templist = new SingleLinkedList();
+         *         HeroNode temp2 = list2.head.next;
+         *         boolean flag = false;
+         *         while(true)
+         *         {
+         *             HeroNode newNode = temp2;
+         *             if(temp1 != null)
+         *             {
+         *                 if(temp2.next != null)
+         *                 {
+         *                     if(temp1.next.no > newNode.no)
+         *                     {
+         *                         break;
+         *                     }
+         *                     else if(temp1.next.no == newNode.no)
+         *                     {
+         *                         flag = true;
+         *                         break;
+         *                     }
+         *                 }
+         *                 else
+         *                 {
+         *                     System.out.println("list2链表为:" + null);
+         *                     break;
+         *                 }
+         *                 temp1 = temp1.next;
+         *
+         *             }
+         *             else
+         *             {
+         *                 System.out.println("list1链表为:" + null);
+         *                 break;
+         *             }
+         *
+         *
+         *
+         *             //            if(temp1.next == null)
+         *             //            {
+         *             //                System.out.println("list1链表为:" + null);
+         *             //                break;
+         *             //            }
+         *             //            else if(temp2.next == null)
+         *             //            {
+         *             //                System.out.println("list2链表为:" + null);
+         *             //                break;
+         *             //            }
+         *             //            else if(temp1.next.no > temp2.no)                   //(temp2.no > temp1.no) && (temp1.next.no > temp2.no)
+         *             //            {
+         *             //                break;
+         *             //            }
+         *             //            else if(temp1.next.no == temp2.no)
+         *             //            {
+         *             //                flag = true;
+         *             //                break;
+         *             //            }
+         *             //            //                temp2.next = temp1.next;
+         *             //            //                temp1.next = temp2;
+         *             //            temp1 = temp1.next;
+         *             //            temp2 = temp2.next;
+         *             //        }
+         *
+         *             while(newNode.next != null)
+         *             {
+         *
+         *                 if(flag)
+         *                 {
+         *                     System.out.println("该编号元素已存在" + newNode.no);
+         *                 }
+         *                 else
+         *                 {
+         *                     try
+         *                     {
+         *                         newNode.next = temp1.next;
+         *                         temp1.next = newNode;
+         *                         System.out.println(newNode.no + "元素添加成功");
+         *                     } catch(Exception e)
+         *                     {
+         *                         System.out.println(e.getMessage());
+         *                     }
+         *                 }
+         *                 temp2 = temp2.next;
+         *             }
+         *         }
+         *
+         */
     }
 }
 
@@ -421,3 +592,4 @@ class HeroNode
     }
 
 }
+
