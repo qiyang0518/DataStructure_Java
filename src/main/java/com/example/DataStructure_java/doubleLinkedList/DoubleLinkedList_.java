@@ -43,17 +43,17 @@ public class DoubleLinkedList_
 
 @SuppressWarnings({"all"})
         // 创建一个双向链表的类
-class DoubleLinkedList
+class DoubleLinkedList                  //创建双向链表
 {
 
     // 先初始化一个头节点, 头节点不要动, 不存放具体的数据
-    private HeroNode2 head = new HeroNode2(0,"","");
+    private HeroNode2 head = new HeroNode2(0,"","");                    //定义头结点,各属性为空
 
     // 返回头节点
     public HeroNode2 getHead()
     {
         return head;
-    }
+    }               //获取头结点
 
     // 遍历双向链表的方法
     // 显示链表[遍历]
@@ -67,7 +67,7 @@ class DoubleLinkedList
      *
      */
 
-    public void list()
+    public void list()              //遍历双向链表
     {
         // 判断链表是否为空
         if(head.next == null)
@@ -92,11 +92,11 @@ class DoubleLinkedList
     }
 
     // 添加一个节点到双向链表的最后.
-    public void add(HeroNode2 heroNode)
+    public void add(HeroNode2 heroNode)                 //(尾插法)往链表中添加元素
     {
 
         // 因为head节点不能动，因此我们需要一个辅助遍历 temp
-        HeroNode2 temp = head;
+        HeroNode2 temp = head;                          //临时量temp,作为指针
         // 遍历链表，找到最后
         while(true)
         {
@@ -110,31 +110,44 @@ class DoubleLinkedList
         }
         // 当退出while循环时，temp就指向了链表的最后
         // 形成一个双向链表
-        temp.next = heroNode;
-        heroNode.pre = temp;
+        temp.next = heroNode;                           //后继节点指向新结点
+        heroNode.pre = temp;                            //新元素的前驱结点指向temp
     }
+
+    /**
+     *
+     * @method update
+     * 思路:1、传入索引参数
+     *     2、判断链表是否为空
+     *     3、是否修改结点属性(分支判断,采用boolean flag值进行判断)
+     *        a、是否遍历至链未
+     *        b、查找到目标结点
+     *        c、依据flag值进行分类操作
+     *           A、flag为真:进行修改操作
+     *           B、flag为假:目标节点未找到
+     */
 
     // 修改一个节点的内容, 可以看到双向链表的节点内容修改和单向链表一样
     // 只是 节点类型改成 HeroNode2
-    public void update(HeroNode2 newHeroNode)
+    public void update(HeroNode2 newHeroNode)               //修改结点属性(根据给定no,进行索引查找,进而修改)
     {
         // 判断是否空
-        if(head.next == null)
+        if(head.next == null)                               //判断链表是否为空
         {
             System.out.println("链表为空~");
             return;
         }
         // 找到需要修改的节点, 根据no编号
         // 定义一个辅助变量
-        HeroNode2 temp = head.next;
+        HeroNode2 temp = head.next;                         //定义辅助变量temp
         boolean flag = false; // 表示是否找到该节点
         while(true)
         {
-            if(temp == null)
+            if(temp == null)                                //判断是否遍历至链表尾
             {
                 break; // 已经遍历完链表
             }
-            if(temp.no == newHeroNode.no)
+            if(temp.no == newHeroNode.no)                   //指针temp.no = 元素.no证明已找到
             {
                 // 找到
                 flag = true;
@@ -145,7 +158,7 @@ class DoubleLinkedList
         // 根据flag 判断是否找到要修改的节点
         if(flag)
         {
-            temp.name = newHeroNode.name;
+            temp.name = newHeroNode.name;                    //更改结点相关属性
             temp.nickname = newHeroNode.nickname;
         }
         else
@@ -153,6 +166,16 @@ class DoubleLinkedList
             System.out.printf("没有找到 编号 %d 的节点，不能修改\n",newHeroNode.no);
         }
     }
+
+
+    /**
+     * @method del(no)
+     * 思路: 1、判断链表是否为空
+     *      2、对链表进行遍历
+     *      3、根据flag值进行分类
+     *         a、flag值为真:进行删除操作(temp.pre.next = temp.next、temp.next.pre = next.pre(注意:前提是该节点不是尾结点,尾结点直接略过此运算))
+     *         b、flag值为假:删除元素不存在
+     */
 
     // 从双向链表中删除一个节点,
     // 说明
